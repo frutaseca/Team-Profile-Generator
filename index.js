@@ -1,7 +1,14 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-const Manager = [
+const employee = require('./lib/employee');
+const engineer = require('./lib/engineer');
+const intern = require('./lib/intern');
+const manager = require('./lib/manager');
+
+const teamArray= [];
+
+const ManagerQues = [
     {
         name: 'start',
         type: 'confirm',
@@ -35,7 +42,7 @@ const Manager = [
       },
 ];
 
-const Enginner = [
+const EnginnerQues = [
     {
         name: 'name',
         type: 'input',
@@ -64,7 +71,7 @@ const Enginner = [
       },
 ];
 
-const Intern = [
+const InternQues = [
     {
         name: 'name',
         type: 'input',
@@ -92,3 +99,30 @@ const Intern = [
         message: 'What is next?',
       },
 ];
+
+questions(ManagerQues);
+
+function questions(ques) {
+    inquirer
+    .prompt(ques) 
+    .then((member) => {
+        teamArray.push(member);
+
+        if(member.Next === 'Add Engineer') {
+            questions(EnginnerQues);
+        } else if (member.Next === 'Add Intern') {
+            questions(InternQues);
+        } else {
+            card(teamArray);
+        }
+    })
+    .catch((err) => console.log(err));   
+}
+
+function card(teamArray) {
+
+}
+
+function writeHTML() {
+
+}
