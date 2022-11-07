@@ -1,10 +1,15 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
-const employee = require('./lib/employee');
-const engineer = require('./lib/engineer');
-const intern = require('./lib/intern');
-const manager = require('./lib/manager');
+const Employee = require('./lib/Employee');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const Manager = require('./lib/Manager');
+
+const HTMLTemplate = require('./templates/html-template');
+const EngineerTemplate = require('./templates/engineer-template');
+const InternTemplate = require('./templates/intern-template');
+const ManagerTemplate = require('./templates/manager-template');
 
 const teamArray= [];
 
@@ -116,13 +121,39 @@ function questions(ques) {
             card(teamArray);
         }
     })
-    .catch((err) => console.log(err));   
+    .catch((err) => console.log(err));
 }
 
-function card(teamArray) {
+function makeProfiles(team) {
+  const profiles= team.map((member) => {
+    const {name, id, email} = member;
 
+    if (member.hasProperty('officeNumber')) {
+      const {officenumber} = member;
+      return new Manager(name, id, email, officenumber);
+    }
+
+    if (member.hasProperty('github')) {
+      const { github } = member;
+      return new Engineer(name, id, email, github);
+    }
+
+    if (member.hasOwnProperty('school')) {
+      const { school } = member;
+      return new Intern(name, id, email, school);
+    }
+
+  });
+
+  generateHTML();
+}
+
+function generateHTML() {
+  
 }
 
 function writeHTML() {
-
+  fs.writeFile('index.html', html, 'utf-8', (err) => {
+    err ? console.log(err) : console.log('HTML file successfully created.')
+  })
 }
