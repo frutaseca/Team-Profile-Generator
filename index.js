@@ -1,3 +1,4 @@
+// adding in node packages
 const inquirer = require('inquirer');
 const fs = require('fs');
 
@@ -13,6 +14,7 @@ const Manager = require('./lib/Manager');
 
 const teamArray= [];
 
+// Manger Questions
 const ManagerQues = [
     {
         name: 'start',
@@ -47,6 +49,7 @@ const ManagerQues = [
       },
 ];
 
+// Engineer Questions
 const EnginnerQues = [
     {
         name: 'name',
@@ -76,6 +79,7 @@ const EnginnerQues = [
       },
 ];
 
+// Intern Questions
 const InternQues = [
     {
         name: 'name',
@@ -105,8 +109,10 @@ const InternQues = [
       },
 ];
 
+// starts the questions function
 questions(ManagerQues);
 
+// ask questions for manager engineer and intern
 function questions(ques) {
     inquirer
     .prompt(ques) 
@@ -145,9 +151,11 @@ function makeProfiles(team) {
 
   });
 
+  // generates html from the profiles made in the generateHTML function
   generateHTML(profiles);
 }
 
+// makes the profiles for the html
 function generateHTML(profiles) {
   let profileCards = '';
   profiles.forEach((profile) => {
@@ -169,6 +177,7 @@ const HTML = HTMLTemplate(profileCards);
 writeHTML(HTML);
 };
 
+// function to generate HTML file in dist folder
 function writeHTML(HTML) {
   fs.writeFile('./dist/index.html', HTML, (err) => {
     if (err) console.log('err');
