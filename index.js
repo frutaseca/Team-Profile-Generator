@@ -118,7 +118,7 @@ function questions(ques) {
         } else if (member.Next === 'Add Intern') {
             questions(InternQues);
         } else {
-            card(teamArray);
+            makeProfiles(teamArray);
         }
     })
     .catch((err) => console.log(err));
@@ -128,12 +128,12 @@ function makeProfiles(team) {
   const profiles= team.map((member) => {
     const {name, id, email} = member;
 
-    if (member.hasProperty('officeNumber')) {
+    if (member.hasOwnProperty('officeNumber')) {
       const {officenumber} = member;
       return new Manager(name, id, email, officenumber);
     }
 
-    if (member.hasProperty('github')) {
+    if (member.hasOwnProperty('github')) {
       const { github } = member;
       return new Engineer(name, id, email, github);
     }
@@ -152,25 +152,26 @@ function generateHTML(profiles) {
   let profileCards = '';
   profiles.forEach((profile) => {
     if (profile instanceof Manager) {
-      const card = addManagerCard(profile);
+      const card = ManagerTemplate(profile);
       profileCards += card;
     } else if (profile instanceof Engineer) {
-      const card = addEngineerCard(profile);
+      const card = EngineerTemplate(profile);
       profileCards += card;
     } else if (profile instanceof Intern) {
-      const card = addInternCard(profile);
+      const card = InternTemplate(profile);
       profileCards += card;
     }
 })
 
 
-const HTML = wrapProfileCards(profileCards);
+const HTML = HTMLTemplate(profileCards);
 
-writeHtml(HTML);
+writeHTML(HTML);
 };
 
 function writeHTML(HTML) {
-  fs.writeFile('./dist/index.html', HTML, 'utf-8', (err) => {
-    err ? console.log(err) : console.log('HTML file successfully created.')
-  })
-}
+  fs.writeFile('./dist/index.html', HTML, (err) => {
+    if (err) console.log('err');
+    console.log('HTML file successfully created.');
+  });
+};
