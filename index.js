@@ -1,15 +1,15 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
+const HTMLTemplate = require('./src/html-template');
+const EngineerTemplate = require('./src/engineer-template');
+const InternTemplate = require('./src/intern-template');
+const ManagerTemplate = require('./src/manager-template');
+
 const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
-
-const HTMLTemplate = require('./templates/html-template');
-const EngineerTemplate = require('./templates/engineer-template');
-const InternTemplate = require('./templates/intern-template');
-const ManagerTemplate = require('./templates/manager-template');
 
 const teamArray= [];
 
@@ -145,15 +145,32 @@ function makeProfiles(team) {
 
   });
 
-  generateHTML();
+  generateHTML(profiles);
 }
 
-function generateHTML() {
-  
-}
+function generateHTML(profiles) {
+  let profileCards = '';
+  profiles.forEach((profile) => {
+    if (profile instanceof Manager) {
+      const card = addManagerCard(profile);
+      profileCards += card;
+    } else if (profile instanceof Engineer) {
+      const card = addEngineerCard(profile);
+      profileCards += card;
+    } else if (profile instanceof Intern) {
+      const card = addInternCard(profile);
+      profileCards += card;
+    }
+})
 
-function writeHTML() {
-  fs.writeFile('index.html', html, 'utf-8', (err) => {
+
+const HTML = wrapProfileCards(profileCards);
+
+writeHtml(HTML);
+};
+
+function writeHTML(HTML) {
+  fs.writeFile('./dist/index.html', HTML, 'utf-8', (err) => {
     err ? console.log(err) : console.log('HTML file successfully created.')
   })
 }

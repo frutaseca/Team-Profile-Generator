@@ -1,4 +1,4 @@
-const HTML = (templates) => `
+const TemplateHTML = (templates) => `
 <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -11,4 +11,4 @@ const HTML = (templates) => `
     <script src="https://kit.fontawesome.com/a33877bb0a.js" crossorigin="anonymous"></script>
   </head>`
 
-  module.exports = HTML;
+  module.exports = TemplateHTML;
